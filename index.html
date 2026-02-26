@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スカウト業務トラッカー</title>
+  <meta name="description" content="20代・30代の履歴書評価件数、送付件数、作業時間を計測・分析するスカウト業務トラッカー">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <h1 class="app-title">
+        <span class="title-icon">📋</span>
+        スカウト業務トラッカー
+      </h1>
+      <p class="app-subtitle">履歴書評価 &amp; オファー送付 管理</p>
+    </div>
+  </header>
+
+  <!-- Tab Navigation -->
+  <nav class="tab-nav" role="tablist">
+    <button class="tab-btn active" data-tab="twenties" role="tab" aria-selected="true" id="tab-twenties">
+      <span class="tab-icon">👤</span>
+      20代
+    </button>
+    <button class="tab-btn" data-tab="thirties" role="tab" aria-selected="false" id="tab-thirties">
+      <span class="tab-icon">👥</span>
+      30代
+    </button>
+    <button class="tab-btn" data-tab="summary" role="tab" aria-selected="false" id="tab-summary">
+      <span class="tab-icon">📊</span>
+      総計
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ===== 20代タブ ===== -->
+    <section class="tab-panel active" id="panel-twenties" role="tabpanel" aria-labelledby="tab-twenties">
+      <!-- Timer Section -->
+      <div class="card timer-card">
+        <div class="card-header">
+          <h2>⏱️ 業務タイマー</h2>
+        </div>
+        <div class="timer-display" id="timer-twenties">00:00:00</div>
+        <div class="timer-controls">
+          <button class="btn btn-start" id="start-twenties" onclick="toggleTimer('twenties')">
+            <span class="btn-icon">▶</span> 業務開始
+          </button>
+        </div>
+        <div class="timer-stats">
+          <div class="stat-item">
+            <span class="stat-label">1件あたりの平均評価時間</span>
+            <span class="stat-value" id="avg-time-twenties">--:--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goal Section -->
+      <div class="card goal-card">
+        <div class="card-header">
+          <h2>🎯 目標設定</h2>
+        </div>
+        <div class="goal-input-group">
+          <label for="goal-twenties">目標オファー送付件数</label>
+          <input type="text" id="goal-twenties" class="goal-input" placeholder="例: 10" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <button class="btn btn-set" onclick="setGoal('twenties')">設定</button>
+        </div>
+        <div class="goal-display" id="goal-display-twenties" style="display:none;">
+          <span class="goal-label">目標:</span>
+          <span class="goal-value" id="goal-value-twenties">0</span>
+          <span class="goal-unit">件</span>
+        </div>
+      </div>
+
+      <!-- Counters -->
+      <div class="card-row">
+        <div class="card counter-card">
+          <div class="counter-label">評価件数</div>
+          <div class="counter-value" id="eval-count-twenties">0</div>
+        </div>
+        <div class="card counter-card accent">
+          <div class="counter-label">送付件数</div>
+          <div class="counter-value" id="send-count-twenties">0</div>
+          <div class="counter-progress" id="progress-twenties" style="display:none;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill-twenties" style="width:0%"></div>
+            </div>
+            <span class="progress-text" id="progress-text-twenties">0 / 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluation Action -->
+      <div class="card action-card">
+        <div class="card-header">
+          <h2>📝 評価アクション</h2>
+        </div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="eval-twenties" value="pass" checked>
+            <span class="radio-custom pass">適合</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="eval-twenties" value="fail">
+            <span class="radio-custom fail">不適合</span>
+          </label>
+        </div>
+        <button class="btn btn-eval" onclick="evaluate('twenties')">評価OK</button>
+      </div>
+
+      <!-- Send Action -->
+      <div class="card action-card send-card locked" id="send-card-twenties">
+        <div class="card-header">
+          <h2>📨 送付アクション</h2>
+          <span class="lock-badge" id="lock-badge-twenties">🔒 ロック中</span>
+        </div>
+        <div class="send-controls">
+          <div class="select-group">
+            <label for="pattern-twenties">送付パターン</label>
+            <select id="pattern-twenties" class="pattern-select" disabled>
+              <option value="1">パターン 1</option>
+              <option value="2">パターン 2</option>
+              <option value="3">パターン 3</option>
+              <option value="4">パターン 4</option>
+              <option value="5">パターン 5</option>
+              <option value="6">パターン 6</option>
+              <option value="7">パターン 7</option>
+              <option value="8">パターン 8</option>
+              <option value="9">パターン 9</option>
+            </select>
+          </div>
+          <button class="btn btn-send" id="send-btn-twenties" onclick="sendOffer('twenties')" disabled>送付OK</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 30代タブ ===== -->
+    <section class="tab-panel" id="panel-thirties" role="tabpanel" aria-labelledby="tab-thirties">
+      <!-- Timer Section -->
+      <div class="card timer-card">
+        <div class="card-header">
+          <h2>⏱️ 業務タイマー</h2>
+        </div>
+        <div class="timer-display" id="timer-thirties">00:00:00</div>
+        <div class="timer-controls">
+          <button class="btn btn-start" id="start-thirties" onclick="toggleTimer('thirties')">
+            <span class="btn-icon">▶</span> 業務開始
+          </button>
+        </div>
+        <div class="timer-stats">
+          <div class="stat-item">
+            <span class="stat-label">1件あたりの平均評価時間</span>
+            <span class="stat-value" id="avg-time-thirties">--:--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goal Section -->
+      <div class="card goal-card">
+        <div class="card-header">
+          <h2>🎯 目標設定</h2>
+        </div>
+        <div class="goal-input-group">
+          <label for="goal-thirties">目標オファー送付件数</label>
+          <input type="text" id="goal-thirties" class="goal-input" placeholder="例: 10" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <button class="btn btn-set" onclick="setGoal('thirties')">設定</button>
+        </div>
+        <div class="goal-display" id="goal-display-thirties" style="display:none;">
+          <span class="goal-label">目標:</span>
+          <span class="goal-value" id="goal-value-thirties">0</span>
+          <span class="goal-unit">件</span>
+        </div>
+      </div>
+
+      <!-- Counters -->
+      <div class="card-row">
+        <div class="card counter-card">
+          <div class="counter-label">評価件数</div>
+          <div class="counter-value" id="eval-count-thirties">0</div>
+        </div>
+        <div class="card counter-card accent">
+          <div class="counter-label">送付件数</div>
+          <div class="counter-value" id="send-count-thirties">0</div>
+          <div class="counter-progress" id="progress-thirties" style="display:none;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill-thirties" style="width:0%"></div>
+            </div>
+            <span class="progress-text" id="progress-text-thirties">0 / 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluation Action -->
+      <div class="card action-card">
+        <div class="card-header">
+          <h2>📝 評価アクション</h2>
+        </div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="eval-thirties" value="pass" checked>
+            <span class="radio-custom pass">適合</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="eval-thirties" value="fail">
+            <span class="radio-custom fail">不適合</span>
+          </label>
+        </div>
+        <button class="btn btn-eval" onclick="evaluate('thirties')">評価OK</button>
+      </div>
+
+      <!-- Send Action -->
+      <div class="card action-card send-card locked" id="send-card-thirties">
+        <div class="card-header">
+          <h2>📨 送付アクション</h2>
+          <span class="lock-badge" id="lock-badge-thirties">🔒 ロック中</span>
+        </div>
+        <div class="send-controls">
+          <div class="select-group">
+            <label for="pattern-thirties">送付パターン</label>
+            <select id="pattern-thirties" class="pattern-select" disabled>
+              <option value="1">パターン 1</option>
+              <option value="2">パターン 2</option>
+              <option value="3">パターン 3</option>
+              <option value="4">パターン 4</option>
+              <option value="5">パターン 5</option>
+              <option value="6">パターン 6</option>
+              <option value="7">パターン 7</option>
+              <option value="8">パターン 8</option>
+              <option value="9">パターン 9</option>
+            </select>
+          </div>
+          <button class="btn btn-send" id="send-btn-thirties" onclick="sendOffer('thirties')" disabled>送付OK</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 総計タブ ===== -->
+    <section class="tab-panel" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
+      <div class="dashboard">
+        <!-- Summary Stats -->
+        <div class="card-row four-col">
+          <div class="card stat-card">
+            <div class="stat-card-icon">📋</div>
+            <div class="stat-card-value" id="total-eval">0</div>
+            <div class="stat-card-label">総評価件数</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-icon">📨</div>
+            <div class="stat-card-value" id="total-send">0</div>
+            <div class="stat-card-label">総送付件数</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-icon">⏱️</div>
+            <div class="stat-card-value" id="total-time">00:00:00</div>
+            <div class="stat-card-label">全体稼働時間</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-icon">⚡</div>
+            <div class="stat-card-value" id="total-avg">--:--</div>
+            <div class="stat-card-label">平均処理時間/件</div>
+          </div>
+        </div>
+
+        <!-- Breakdown by age group -->
+        <div class="card-row">
+          <div class="card breakdown-card">
+            <div class="card-header">
+              <h2>👤 20代 内訳</h2>
+            </div>
+            <div class="breakdown-stats">
+              <div class="breakdown-item">
+                <span class="breakdown-label">評価</span>
+                <span class="breakdown-value" id="summary-eval-twenties">0</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">送付</span>
+                <span class="breakdown-value" id="summary-send-twenties">0</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">稼働</span>
+                <span class="breakdown-value" id="summary-time-twenties">00:00:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="card breakdown-card">
+            <div class="card-header">
+              <h2>👥 30代 内訳</h2>
+            </div>
+            <div class="breakdown-stats">
+              <div class="breakdown-item">
+                <span class="breakdown-label">評価</span>
+                <span class="breakdown-value" id="summary-eval-thirties">0</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">送付</span>
+                <span class="breakdown-value" id="summary-send-thirties">0</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-label">稼働</span>
+                <span class="breakdown-value" id="summary-time-thirties">00:00:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern Chart -->
+        <div class="card chart-card">
+          <div class="card-header">
+            <h2>📊 パターン別 送付内訳</h2>
+          </div>
+          <div class="chart-container">
+            <canvas id="pattern-chart"></canvas>
+          </div>
+          <div class="chart-legend" id="chart-legend"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Goal Achievement Modal -->
+  <div class="modal-overlay" id="goal-modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-celebration">🎉</div>
+      <h2 class="modal-title">目標達成おめでとうございます！</h2>
+      <p class="modal-message" id="modal-message">素晴らしい仕事です！</p>
+      <button class="btn btn-close-modal" onclick="closeModal()">閉じる</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" style="display:none;">
+    <span class="toast-icon">✅</span>
+    <span class="toast-message" id="toast-message"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
