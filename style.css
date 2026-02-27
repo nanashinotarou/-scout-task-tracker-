@@ -177,8 +177,15 @@ body::before {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- Cards --- */
@@ -528,13 +535,13 @@ body::before {
   color: var(--accent-red);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.pass {
+.radio-label input[type="radio"]:checked+.radio-custom.pass {
   border-color: var(--accent-green);
   background: rgba(16, 185, 129, 0.1);
   box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.fail {
+.radio-label input[type="radio"]:checked+.radio-custom.fail {
   border-color: var(--accent-red);
   background: rgba(239, 68, 68, 0.1);
   box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
@@ -741,8 +748,15 @@ body::before {
 }
 
 @keyframes modalPop {
-  from { opacity: 0; transform: scale(0.85) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-celebration {
@@ -752,8 +766,13 @@ body::before {
 }
 
 @keyframes bounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-10px); }
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
 }
 
 .modal-title {
@@ -792,12 +811,22 @@ body::before {
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
 }
 
 .toast-icon {
@@ -849,8 +878,50 @@ body::before {
     opacity: 1;
     transform: translateY(0) rotate(0deg);
   }
+
   100% {
     opacity: 0;
     transform: translateY(100vh) rotate(720deg);
   }
+}
+
+/* --- Additional Buttons --- */
+.btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-cancel:hover {
+  background: rgba(244, 63, 94, 0.1);
+  border-color: #fb7185;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  font-size: 1rem;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }

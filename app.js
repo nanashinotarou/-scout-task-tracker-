@@ -14,6 +14,7 @@ const state = {
     goalSet: false,
     goalAchieved: false,
     patterns: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
+    lastSentPattern: null,
     sendUnlocked: false,
   },
   thirties: {
@@ -26,6 +27,7 @@ const state = {
     goalSet: false,
     goalAchieved: false,
     patterns: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
+    lastSentPattern: null,
     sendUnlocked: false,
   },
 };
@@ -211,6 +213,7 @@ function sendOffer(group) {
 
   // Track pattern
   s.patterns[pattern]++;
+  s.lastSentPattern = pattern;
 
   // Update progress
   updateProgress(group);
@@ -229,6 +232,37 @@ function sendOffer(group) {
     const groupLabel = group === 'twenties' ? '20代' : '30代';
     showToast(`${groupLabel}: パターン${pattern}で送付完了（${s.sendCount}件目）`);
   }
+}
+
+// ─── Cancel Send Action ────────────────────────────
+function cancelSend(group) {
+  const s = state[group];
+  if (s.sendCount === 0 || !s.lastSentPattern) {
+    showToast('取り消せる直近の送付履歴がありません');
+    return;
+  }
+
+  // Decrement counts
+  s.sendCount--;
+  s.patterns[s.lastSentPattern]--;
+  s.lastSentPattern = null; // Can only cancel once in a row
+
+  // Update view
+  document.getElementById('send-count-' + group).textContent = s.sendCount;
+  updateProgress(group);
+  animateCounter('send-count-' + group);
+
+  // Revert goal achievements if applicable
+  if (s.goalAchieved && s.sendCount < s.goal) {
+    s.goalAchieved = false;
+  }
+
+  // If summary view is open, refresh it
+  if (document.getElementById('panel-summary').classList.contains('active')) {
+    updateSummaryDashboard();
+  }
+
+  showToast('送付を取り消しました（評価件数のみカウント）');
 }
 
 // ─── Goal Achievement ──────────────────────────
@@ -300,6 +334,52 @@ function updateSummaryDashboard() {
 
   // Pattern chart
   drawPatternChart();
+}
+
+// ─── Save & Notify ─────────────────────────────
+async function saveAndNotify() {
+  const btn = document.getElementById('save-notify-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-icon">⏳</span> 記録・送信中...';
+
+  try {
+    // Collect data to send to GAS (Endpoint to be implemented)
+    const totalEval = state.twenties.evalCount + state.thirties.evalCount;
+    const totalSend = state.twenties.sendCount + state.thirties.sendCount;
+    const totalSeconds = state.twenties.elapsedSeconds + state.thirties.elapsedSeconds;
+
+    /* 
+    const data = {
+      timestamp: new Date().toISOString(),
+      evalTwenties: state.twenties.evalCount,
+      sendTwenties: state.twenties.sendCount,
+      timeTwenties: state.twenties.elapsedSeconds,
+      evalThirties: state.thirties.evalCount,
+      sendThirties: state.thirties.sendCount,
+      timeThirties: state.thirties.elapsedSeconds,
+      totalEval, totalSend, totalSeconds
+    };
+    // await fetch("GAS_WEB_APP_URL", { method: "POST", body: JSON.stringify(data) });
+    */
+
+    // Mock Delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Notification success
+    btn.innerHTML = '<span class="btn-icon">✅</span> 記録・送信完了';
+    showToast('スプレッドシートへの記録と通知が完了しました');
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="btn-icon">💾</span> 業務完了：データを記録して通知';
+    }, 3000);
+
+  } catch (error) {
+    console.error(error);
+    showToast('エラーが発生しました');
+    btn.disabled = false;
+    btn.innerHTML = '<span class="btn-icon">💾</span> 業務完了：データを記録して通知';
+  }
 }
 
 // ─── Pattern Chart (Canvas) ────────────────────

@@ -92,7 +92,10 @@
         </div>
         <div class="card counter-card accent">
           <div class="counter-label">送付件数</div>
-          <div class="counter-value" id="send-count-twenties">0</div>
+          <div class="counter-value-wrapper" style="display:flex; align-items:center; gap:0.5rem;">
+            <div class="counter-value" id="send-count-twenties">0</div>
+            <button class="btn-cancel" onclick="cancelSend('twenties')" title="直近の送付を取り消す">↩️ 取消</button>
+          </div>
           <div class="counter-progress" id="progress-twenties" style="display:none;">
             <div class="progress-bar">
               <div class="progress-fill" id="progress-fill-twenties" style="width:0%"></div>
@@ -193,7 +196,10 @@
         </div>
         <div class="card counter-card accent">
           <div class="counter-label">送付件数</div>
-          <div class="counter-value" id="send-count-thirties">0</div>
+          <div class="counter-value-wrapper" style="display:flex; align-items:center; gap:0.5rem;">
+            <div class="counter-value" id="send-count-thirties">0</div>
+            <button class="btn-cancel" onclick="cancelSend('thirties')" title="直近の送付を取り消す">↩️ 取消</button>
+          </div>
           <div class="counter-progress" id="progress-thirties" style="display:none;">
             <div class="progress-bar">
               <div class="progress-fill" id="progress-fill-thirties" style="width:0%"></div>
@@ -249,6 +255,11 @@
 
     <!-- ===== 総計タブ ===== -->
     <section class="tab-panel" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
+      <div class="dashboard-controls" style="margin-bottom: 1.5rem; text-align: right;">
+        <button class="btn btn-save" id="save-notify-btn" onclick="saveAndNotify()">
+          <span class="btn-icon">💾</span> 業務完了：データを記録して通知
+        </button>
+      </div>
       <div class="dashboard">
         <!-- Summary Stats -->
         <div class="card-row four-col">
