@@ -146,7 +146,7 @@ function updateProgress(group) {
 }
 
 // ─── Evaluation Action ─────────────────────────
-function evaluate(group) {
+function evaluateResume(group) {
   const s = state[group];
   const selected = document.querySelector(`input[name="eval-${group}"]:checked`).value;
 

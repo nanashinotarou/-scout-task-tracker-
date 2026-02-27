@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
   <meta name="description" content="20代・30代の履歴書評価件数、送付件数、作業時間を計測・分析するスカウト業務トラッカー">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- Header -->
   <header class="app-header">
@@ -69,7 +73,8 @@
         </div>
         <div class="goal-input-group">
           <label for="goal-twenties">目標オファー送付件数</label>
-          <input type="text" id="goal-twenties" class="goal-input" placeholder="例: 10" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" id="goal-twenties" class="goal-input" placeholder="例: 10" inputmode="numeric"
+            pattern="[0-9]*" autocomplete="off">
           <button class="btn btn-set" onclick="setGoal('twenties')">設定</button>
         </div>
         <div class="goal-display" id="goal-display-twenties" style="display:none;">
@@ -112,7 +117,7 @@
             <span class="radio-custom fail">不適合</span>
           </label>
         </div>
-        <button class="btn btn-eval" onclick="evaluate('twenties')">評価OK</button>
+        <button class="btn btn-eval" onclick="evaluateResume('twenties')">評価OK</button>
       </div>
 
       <!-- Send Action -->
@@ -169,7 +174,8 @@
         </div>
         <div class="goal-input-group">
           <label for="goal-thirties">目標オファー送付件数</label>
-          <input type="text" id="goal-thirties" class="goal-input" placeholder="例: 10" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" id="goal-thirties" class="goal-input" placeholder="例: 10" inputmode="numeric"
+            pattern="[0-9]*" autocomplete="off">
           <button class="btn btn-set" onclick="setGoal('thirties')">設定</button>
         </div>
         <div class="goal-display" id="goal-display-thirties" style="display:none;">
@@ -212,7 +218,7 @@
             <span class="radio-custom fail">不適合</span>
           </label>
         </div>
-        <button class="btn btn-eval" onclick="evaluate('thirties')">評価OK</button>
+        <button class="btn btn-eval" onclick="evaluateResume('thirties')">評価OK</button>
       </div>
 
       <!-- Send Action -->
@@ -342,4 +348,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>
