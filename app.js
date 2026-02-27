@@ -348,22 +348,28 @@ async function saveAndNotify() {
     const totalSend = state.twenties.sendCount + state.thirties.sendCount;
     const totalSeconds = state.twenties.elapsedSeconds + state.thirties.elapsedSeconds;
 
-    /* 
     const data = {
       timestamp: new Date().toISOString(),
       evalTwenties: state.twenties.evalCount,
       sendTwenties: state.twenties.sendCount,
-      timeTwenties: state.twenties.elapsedSeconds,
+      timeTwentiesFormatted: formatTime(state.twenties.elapsedSeconds),
       evalThirties: state.thirties.evalCount,
       sendThirties: state.thirties.sendCount,
-      timeThirties: state.thirties.elapsedSeconds,
-      totalEval, totalSend, totalSeconds
+      timeThirtiesFormatted: formatTime(state.thirties.elapsedSeconds),
+      totalEval, totalSend,
+      totalTimeFormatted: formatTime(totalSeconds)
     };
-    // await fetch("GAS_WEB_APP_URL", { method: "POST", body: JSON.stringify(data) });
-    */
 
-    // Mock Delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // GAS Exec URL
+    const gasUrl = "https://script.google.com/macros/s/AKfycbwXCo3M_nMpzICXmXGstFUSVFvetNi8PzCM7ffvuLJ-3DTAvOTE8ZnUJibbghPpOuWUOA/exec";
+
+    await fetch(gasUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain" // GAS CORS workaround
+      },
+      body: JSON.stringify(data)
+    });
 
     // Notification success
     btn.innerHTML = '<span class="btn-icon">✅</span> 記録・送信完了';
